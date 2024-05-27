@@ -1,25 +1,71 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
+import AddProducts from '../components/AddProducts.vue';
+import AddUsers from '../components/AddUsers.vue';
+import DeleteProducts from '../components/DeleteProducts.vue';
+import DeleteUsers from '../components/DeleteUsers.vue';
+import EditProduct from '../components/EditProducts.vue';
+import LoginPage from '../components/LoginPage.vue';
+import RegisterPage from '../components/RegisterPage.vue';
+import ViewProducts from '../components/ViewProducts.vue';
+import ViewUsers from '../components/ViewUsers.vue';
 
 const routes = [
   {
     path: '/',
-    name: 'home',
+    name: 'Home',
     component: HomeView
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path: '/add-products',
+    name: 'AddProducts',
+    component: AddProducts
+  },
+  {
+    path: '/add-users',
+    name: 'AddUsers',
+    component: AddUsers
+  },
+  {
+    path: '/delete-products',
+    name: 'DeleteProducts',
+    component: DeleteProducts
+  },
+  {
+    path: '/delete-users',
+    name: 'DeleteUsers',
+    component: DeleteUsers
+  },
+  {
+    path: '/edit-product/:id',
+    name: 'EditProduct',
+    component: EditProduct
+  },
+  {
+    path: '/login',
+    name: 'LoginPage',
+    component: LoginPage
+  },
+  {
+    path: '/register',
+    name: 'RegisterPage',
+    component: RegisterPage
+  },
+  {
+    path: '/view-products',
+    name: 'ViewProducts',
+    component: ViewProducts
+  },
+  {
+    path: '/view-users',
+    name: 'ViewUsers',
+    component: ViewUsers
   }
-]
+];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes
-})
+});
 
-export default router
+export default router;

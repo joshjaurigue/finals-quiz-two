@@ -14,7 +14,9 @@
 </template>
 
 <script>
-
+export default {
+  name: 'EditUsers'
+};
 </script>
 
 <style scoped>

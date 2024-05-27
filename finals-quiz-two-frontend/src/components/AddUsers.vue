@@ -14,7 +14,9 @@
 </template>
 
 <script>
-
+export default {
+  name: 'AddUsers'
+};
 </script>
 
 <style scoped>

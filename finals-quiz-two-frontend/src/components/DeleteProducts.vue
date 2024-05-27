@@ -14,7 +14,9 @@
 </template>
 
 <script>
-
+export default {
+  name: 'DeleteProducts'
+};
 </script>
 
 <style scoped>

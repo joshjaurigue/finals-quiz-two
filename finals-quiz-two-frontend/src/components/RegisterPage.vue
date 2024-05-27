@@ -52,8 +52,11 @@
     </div>
   </template>
   
-  <script>
- 
+ <script>
+export default {
+  name: 'RegisterPage', // Define the name property
+  // Other component options...
+};
   </script>
   
   <style scoped>
