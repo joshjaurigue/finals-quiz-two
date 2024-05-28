@@ -1,118 +1,154 @@
 <template>
-    <div>
-      <!-- Navigation Bar -->
-      <nav class="nav-bar">
-        <div class="nav-container">
-          <router-link class="nav-brand" to="/">Product CMS</router-link>
-          <ul class="nav-links">
-            <li class="nav-item">
-              <router-link class="nav-link" to="/">Login</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/register">Register</router-link>
-            </li>
-          </ul>
-        </div>
-      </nav>
-      
-      <!-- Login Form -->
-      <div class="container mt-5 col-3">
-        <br>
-        <br>
-        <div class="row">
-          <h4>Enter your email and password</h4>
-          <form @submit.prevent="loginUser" class="col-12">
-            <div class="form-group mt-3">
-              <input type="email" class="form-control" id="email" v-model="email" placeholder="Enter email" @input="clearErrors">
+  <div>
+    <!-- Navigation Bar -->
+    <nav class="nav-bar">
+      <div class="nav-container">
+        <router-link class="nav-brand" to="/">E-Commerce Shop</router-link>
+        <ul class="nav-links">
+          <li class="nav-item">
+            <router-link class="nav-link" to="/">Login</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/register">Register</router-link>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Login Form -->
+    <div class="container mt-5 mx-auto">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <form @submit.prevent="loginUser">
+            <h4 class="mb-4">Login</h4>
+            <div class="form-group">
+              <input type="email" class="form-control" v-model="email" placeholder="Enter your Email" @input="clearErrors">
               <small class="text-danger" v-if="errors?.email">{{ errors.email[0] }}</small>
             </div>
-            <div class="form-group mt-3">
-              <input :type="passwordVisible ? 'text' : 'password'" class="form-control" id="password" v-model="password" placeholder="Password" @input="clearErrors">
+            <div class="form-group">
+              <input :type="passwordVisible ? 'text' : 'password'" class="form-control" v-model="password" placeholder="Enter your Password" @input="clearErrors">
               <small class="text-danger" v-if="errors?.password">{{ errors.password[0] }}</small>
             </div>
-            <div class="form-group mt-3">
-              <input type="checkbox" id="showPassword" v-model="passwordVisible">
-              <label for="showPassword">Show Password</label>
+            <div class="form-group form-check">
+              <input type="checkbox" id="showPassword" v-model="passwordVisible" class="form-check-input">
+              <label for="showPassword" class="form-check-label">Show Password</label>
             </div>
-            <button type="submit" class="btn btn-primary mt-3 w-100">Login</button>
+            <button type="submit" class="btn btn-primary w-100">Login</button>
           </form>
+          <p class="mt-3">Don't have an account? <router-link to="/register">Register here!</router-link></p>
         </div>
-        <div class="row">
-          <div class="col-12">
-              <p class="mt-3 text-left">Don't have an account? <router-link to="/register">Register here!</router-link></p>
-          </div>
-        </div>
-        <br>
       </div>
     </div>
-  </template>
-  
-  <script>
- export default {
-  name: 'LoginPage'
+  </div>
+</template>
+
+<script>
+import axios from 'axios'; // Import Axios
+
+export default {
+  name: 'LoginPage',
+  data() {
+    return {
+      email: '',
+      password: '',
+      passwordVisible: false,
+      errors: {}
+    };
+  },
+  methods: {
+    clearErrors(field) {
+      if (this.errors[field]) {
+        this.errors[field] = null;
+      }
+    },
+    async loginUser() {
+  try {
+    const response = await axios.post('/login', {
+      email: this.email,
+      password: this.password
+    });
+    // Use response variable here
+    console.log(response.data); // For example, log the response data
+  } catch (error) {
+    // Handle error case here
+  }
+}
+}
 };
-  </script>
-  
-  <style scoped>
-  .nav-bar {
-    background-color: #4c4d4e; /* Changed to a blue color */
-    padding: 1em 2em;
-    border-bottom: 2px solid #141414;
-    border-top: 2px solid #141414;
-  }
-  
-  .nav-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .nav-brand {
-    font-size: 1.75em;
-    font-weight: bold;
-    color: #fff;
-     
-  }
-  
-  .nav-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    gap: 1em;
-  }
-  
-  .nav-link {
-    text-decoration: none;
-    color: #ffffff;
-  }
-  
-  .nav-link:hover {
-    text-decoration: underline;
-  }
-  
-  .container {
-    background-color: #bfc0c0; /* Light gray background color */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    box-shadow: inset ;
-  }
-  
-  .form-control {
-    border: 1px solid #007bff; /* Blue border color */
-  }
-  
-  .form-control:focus {
-    border-color: #ffc107; /* Yellow border color on focus */
-    box-shadow: 0 0 5px rgba(255, 193, 7, 0.5); /* Yellow box shadow on focus */
-  }
-  
-  .btn-primary {
-    background-color: #128a0e; /* Green color for buttons */
-    color: #000000; /* White text color */
-  }
-  
-  .btn-primary:hover {
-    background-color: #1128f7; /* Darker green color on hover */
-  }
-  </style>
-  
+</script>
+
+
+<style scoped>
+.nav-bar {
+  background-color: #343a40;
+  padding: 1em 2em;
+  border-bottom: 2px solid #212529;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-brand {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #fff;
+}
+
+.nav-links {
+  list-style: none;
+  padding: 100;
+  margin: 0;
+  display: flex;
+}
+
+.nav-item {
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #fff;
+  padding: 0.5em 3em;
+  border-radius: 5px;
+}
+
+.nav-link:hover {
+  background-color: #495057;
+}
+
+/* Form Styles */
+.container {
+  margin-top: 5em;
+  display: flex;
+  justify-content: center;
+}
+
+.form-group {
+  margin-bottom: 1em; /* Add margin between form groups */
+}
+
+.form-control {
+  border: 1px solid #CED4DA; /* Gray border color */
+  font-size: 1.2em; /* Enlarge text field font size */
+  padding: 0.5em; /* Adjust padding */
+}
+
+.form-control:focus {
+  border-color: #6C757D; /* Dark gray border color on focus */
+  box-shadow: none;
+}
+
+.btn-primary {
+  background-color: #007BFF; /* Blue color for buttons */
+  border-color: #007BFF;
+  font-size: 1.2em; /* Enlarge button font size */
+  padding: 0.5em 2em; /* Adjust button padding */
+}
+
+.btn-primary:hover {
+  background-color: #0056b3; /* Darker blue color on hover */
+}
+</style>
+

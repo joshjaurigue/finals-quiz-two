@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
 import AddProducts from '../components/AddProducts.vue';
 import AddUsers from '../components/AddUsers.vue';
 import DeleteProducts from '../components/DeleteProducts.vue';
@@ -11,11 +10,6 @@ import ViewProducts from '../components/ViewProducts.vue';
 import ViewUsers from '../components/ViewUsers.vue';
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: HomeView
-  },
   {
     path: '/add-products',
     name: 'AddProducts',
@@ -60,6 +54,10 @@ const routes = [
     path: '/view-users',
     name: 'ViewUsers',
     component: ViewUsers
+  },
+  {
+    path: '/',
+    redirect: '/login'
   }
 ];
 

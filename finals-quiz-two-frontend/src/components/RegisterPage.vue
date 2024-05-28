@@ -1,124 +1,160 @@
 <template>
-    <!--Nav bar-->
-    <div>
-      <nav class="nav-bar">
-        <div class="nav-container">
-          <router-link class="nav-brand" to="/">Product CMS</router-link>
-          <ul class="nav-links">
-            <li class="nav-item">
-              <router-link class="nav-link" to="/">Login</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/register">Register</router-link>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </div>
-  
-    <!--Registration Form-->
-    <div class="container mt-5 w-25">
-      <br>
-      <h4>Registration Form</h4>
-      <form @submit.prevent="registerUser">
-        <div class="form-group mb-3">
-          <input type="text" class="form-control" id="name" v-model="name" @input="clearErrors('name')" placeholder="Enter name">
-          <small class="text-danger" v-if="errors.name">{{ errors.name[0] }}</small>
-        </div>
-        <div class="form-group mb-3">
-          <input type="email" class="form-control" id="email" v-model="email" @input="clearErrors('email')" placeholder="Enter email">
-          <small class="text-danger" v-if="errors.email">{{ errors.email[0] }}</small>
-        </div>
-        <div class="form-group mb-3">
-          <input :type="passwordVisible ? 'text' : 'password'" class="form-control" id="password" v-model="password" @input="clearErrors('password')" placeholder="Password">
-          <small class="text-danger" v-if="errors.password">{{ errors.password[0] }}</small>
-        </div>
-        <div class="form-group mb-3">
-          <input :type="confirmPasswordVisible ? 'text' : 'password'" class="form-control" id="confirm" v-model="confirm" placeholder="Confirm Password">
-          <small class="text-danger" v-if="errors.password_confirmation">{{ errors.password_confirmation[0] }}</small>
-        </div>
-        <div class="form-group mb-3">
-          <input type="checkbox" id="showPassword" v-model="passwordVisible">
-          <label for="showPassword">Show Password</label>
-        </div>
-        <div class="form-group mb-3">
-          <input type="checkbox" id="showConfirmPassword" v-model="confirmPasswordVisible">
-          <label for="showConfirmPassword">Show Confirm Password</label>
-        </div>
-        <button type="submit" class="btn btn-primary mt-3 w-100">Register</button>
-        <br>
-        <br>
-      </form>
-    </div>
-  </template>
-  
- <script>
-export default {
-  name: 'RegisterPage', // Define the name property
-  // Other component options...
-};
-  </script>
-  
-  <style scoped>
-  /* Navigation Bar Styles */
-  .nav-bar {
-    background-color: #4c4d4e; /* Changed to a blue color */
-    padding: 1em 2em;
-    border-bottom: 2px solid #141414;
-    border-top: 2px solid #141414;
-  }
-  
-  .nav-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .nav-brand {
-    font-size: 1.75em;
-    font-weight: bold;
-    color: #fff;
-  }
-  
-  .nav-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    gap: 1em;
-  }
+  <div>
+    <!-- Navigation Bar -->
+    <nav class="nav-bar">
+      <div class="nav-container">
+        <router-link class="nav-brand" to="/">E-Commerce Shop</router-link>
+        <ul class="nav-links">
+          <li class="nav-item">
+            <router-link class="nav-link" to="/">Login</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/register">Register</router-link>
+          </li>
+        </ul>
+      </div>
+    </nav>
 
-  .nav-link {
-    text-decoration: none;
-    color: #ffffff;
+    <div class="container mt-5 mx-auto">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <form @submit.prevent="registerUser">
+            <h4 class="mb-4">Register</h4>
+            <div class="form-group">
+              <input type="text" class="form-control" v-model="name" placeholder="Enter your Name" @input="clearErrors">
+              <small class="text-danger" v-if="errors?.name">{{ errors.name[0] }}</small>
+            </div>
+            <div class="form-group">
+              <input type="email" class="form-control" v-model="email" placeholder="Enter your Email" @input="clearErrors">
+              <small class="text-danger" v-if="errors?.email">{{ errors.email[0] }}</small>
+            </div>
+            <div class="form-group">
+              <input :type="passwordVisible ? 'text' : 'password'" class="form-control" v-model="password" placeholder="Enter your Password" @input="clearErrors">
+              <small class="text-danger" v-if="errors?.password">{{ errors.password[0] }}</small>
+            </div>
+            <div class="form-group form-check">
+              <input type="checkbox" id="showPassword" v-model="passwordVisible" class="form-check-input">
+              <label for="showPassword" class="form-check-label">Show Password</label>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Register</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      name: '',
+      email: '',
+      password: '',
+      passwordVisible: false,
+      errors: {}
+    };
+  },
+  methods: {
+    clearErrors(field) {
+      if (this.errors[field]) {
+        this.errors[field] = null;
+      }
+    },
+    async registerUser() {
+      try {
+        console.log('Registering user...');
+        const response = await axios.post(`${process.env.VUE_APP_BASE_URL}/register`, {
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          password_confirmation: this.password
+        });
+        console.log('Registration response:', response);
+        if (response.status === 201) {
+          this.clearForm();
+          alert('Registration successful');
+          this.$router.push({ name: 'login' }); // Redirect to login page after successful registration
+        }
+      } catch (error) {
+        console.error('Registration error:', error);
+        if (error.response && error.response.data && error.response.data.errors) {
+          this.errors = error.response.data.errors;
+        } else {
+          console.error('An unexpected error occurred:', error);
+        }
+      }
+    },
+    clearForm() {
+      this.name = '';
+      this.email = '';
+      this.password = '';
+      this.errors = {}; // Clear errors after successful registration
+    }
   }
-  
-  .nav-link:hover {
-    text-decoration: underline;
-  }
-  
-  .container {
-    background-color: #bfc0c0; /* Light gray background color */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    box-shadow: inset ;
-  }
-  
-  .form-control {
-    border: 2px solid #007bff; /* Blue border color */
-  }
-  
-  .form-control:focus {
-    border-color: #ffc107; /* Yellow border color on focus */
-    box-shadow: 0 0 5px rgba(255, 193, 7, 0.5); /* Yellow box shadow on focus */
-  }
-  
-  .btn-primary {
-    background-color: #128a0e; /* Green color for buttons */
-    color: #000000; /* White text color */
-  }
-  
-  .btn-primary:hover {
-    background-color: #1128f7; /* Darker green color on hover */
-  }
-  </style>
-  
+};
+</script>
+
+<style scoped>
+.container {
+  padding: 20px;
+}
+
+.table-striped {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-striped th, .table-striped td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.table-striped tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.table-striped th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-decoration: none;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-decoration: none;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-decoration: none;
+}
+
+.btn-sm {
+  font-size: 0.875rem;
+  padding: 5px 10px;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+</style>
+
