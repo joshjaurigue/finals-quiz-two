@@ -40,6 +40,7 @@
 
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default {
   name: 'RegisterPage',
@@ -68,8 +69,14 @@ export default {
         });
         if (response.status === 201) {
           this.clearForm();
-          alert('Registration successful');
-          this.$router.push({ name: 'login' }); // Redirect to login page after successful registration
+          Swal.fire({
+            icon: 'success',
+            title: 'Registration Successful!',
+            text: 'You have successfully registered.',
+            confirmButtonText: 'OK'
+          }).then(() => {
+            this.$router.push({ name: 'login' });
+          });
         }
       } catch (error) {
         if (error.response && error.response.data && error.response.data.errors) {
@@ -83,7 +90,7 @@ export default {
       this.name = '';
       this.email = '';
       this.password = '';
-      this.errors = {}; // Clear errors after successful registration
+      this.errors = {};
     }
   }
 };
