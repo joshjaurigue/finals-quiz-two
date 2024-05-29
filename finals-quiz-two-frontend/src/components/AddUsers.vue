@@ -28,6 +28,7 @@
 <script>
 import { BASE_URL } from '@/config';
 import axios from 'axios';
+import Swal from 'sweetalert2'; 
 
 export default {
   name: 'AddUsers',
@@ -54,6 +55,13 @@ export default {
       })
       .then(response => {
         console.log('User added successfully:', response.data);
+        // Display success message using SweetAlert2
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'User added successfully!',
+          confirmButtonText: 'OK'
+        });
         // Optionally, you can reset the form or redirect the user
         this.name = '';
         this.email = '';
@@ -61,6 +69,13 @@ export default {
       })
       .catch(error => {
         console.error('Error adding user:', error);
+        // Display error message using SweetAlert2
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'Failed to add user. Please try again.',
+          confirmButtonText: 'OK'
+        });
       });
     }
   }

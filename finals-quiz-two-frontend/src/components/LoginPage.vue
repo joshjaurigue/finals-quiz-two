@@ -4,14 +4,6 @@
     <nav class="nav-bar">
       <div class="nav-container">
         <router-link class="nav-brand" to="/">E-Commerce Shop</router-link>
-        <ul class="nav-links">
-          <li class="nav-item">
-            <router-link class="nav-link" to="/">Login</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/register">Register</router-link>
-          </li>
-        </ul>
       </div>
     </nav>
 
@@ -44,6 +36,7 @@
 
 <script>
 import axios from 'axios'; // Import Axios
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
 export default {
   name: 'LoginPage',
@@ -62,18 +55,37 @@ export default {
       }
     },
     async loginUser() {
-  try {
-    const response = await axios.post('/login', {
-      email: this.email,
-      password: this.password
-    });
-    // Use response variable here
-    console.log(response.data); // For example, log the response data
-  } catch (error) {
-    // Handle error case here
+      try {
+        const response = await axios.post('/login', {
+          email: this.email,
+          password: this.password
+        });
+        // Use response variable here
+        console.log(response.data); // For example, log the response data
+
+        // Display success message using SweetAlert2
+        Swal.fire({
+          icon: 'success',
+          title: 'Login Successful!',
+          text: 'Welcome to E-Commerce Shop!',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          // Redirect to ViewProducts.vue
+          this.$router.push('/view-products');
+        });
+      } catch (error) {
+        // Handle error case here
+        console.error('Error logging in:', error);
+        // Display error message using SweetAlert2
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed!',
+          text: 'Please check your credentials and try again.',
+          confirmButtonText: 'OK'
+        });
+      }
+    }
   }
-}
-}
 };
 </script>
 
@@ -91,6 +103,7 @@ export default {
   align-items: center;
 }
 
+
 .nav-brand {
   font-size: 1.5em;
   font-weight: bold;
@@ -99,9 +112,11 @@ export default {
 
 .nav-links {
   list-style: none;
-  padding: 100;
+  padding: 0;
   margin: 0;
   display: flex;
+  margin-left: auto; 
+  gap: 2em; 
 }
 
 .nav-item {
@@ -110,13 +125,14 @@ export default {
 .nav-link {
   text-decoration: none;
   color: #fff;
-  padding: 0.5em 3em;
+  padding: 0.5em 1em;
   border-radius: 5px;
 }
 
 .nav-link:hover {
   background-color: #495057;
 }
+
 
 /* Form Styles */
 .container {

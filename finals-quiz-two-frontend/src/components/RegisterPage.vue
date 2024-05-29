@@ -4,14 +4,6 @@
     <nav class="nav-bar">
       <div class="nav-container">
         <router-link class="nav-brand" to="/">E-Commerce Shop</router-link>
-        <ul class="nav-links">
-          <li class="nav-item">
-            <router-link class="nav-link" to="/">Login</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/register">Register</router-link>
-          </li>
-        </ul>
       </div>
     </nav>
 

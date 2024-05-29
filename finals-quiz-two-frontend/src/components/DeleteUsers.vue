@@ -2,7 +2,6 @@
     <nav class="nav-bar">
         <div class="nav-container">
             <router-link class="nav-brand" to="/home">Products</router-link>
-
         </div>
     </nav>
     <div class="container">
@@ -19,6 +18,7 @@
 <script>
 import { BASE_URL } from '@/config';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default {
   name: 'DeleteUsers',
@@ -38,11 +38,27 @@ export default {
           Authorization: `Bearer ${token}`
         }
       })
-      .then(response => {
+        .then(response => {
         this.users = response.data;
       })
       .catch(error => {
         console.error('Error fetching users:', error);
+        Swal.fire('Error', 'Failed to fetch users', 'error');
+      });
+    },
+    confirmDeleteUser(userId) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.deleteUser(userId);
+        }
       });
     },
     deleteUser(userId) {
@@ -55,10 +71,11 @@ export default {
       .then(() => {
         // Remove the deleted user from the list
         this.users = this.users.filter(user => user.id !== userId);
-        console.log('User deleted successfully');
+        Swal.fire('Deleted!', 'The user has been deleted.', 'success');
       })
       .catch(error => {
         console.error('Error deleting user:', error);
+        Swal.fire('Error', 'Failed to delete user', 'error');
       });
     }
   }

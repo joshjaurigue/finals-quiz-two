@@ -29,6 +29,7 @@
   <script>
   import { BASE_URL } from '@/config';
   import axios from 'axios';
+  import Swal from 'sweetalert2';
   
   export default {
     name: 'EditProduct',
@@ -52,38 +53,40 @@
           }
         })
         .then(response => {
-          const product = response.data;
-          this.productName = product.name;
-          this.description = product.description;
-          this.price = product.price;
-        })
-        .catch(error => {
-          console.error('Error fetching product details:', error);
-        });
-      },
-      submitForm() {
-        const token = localStorage.getItem('token');
-        const formData = {
-          name: this.productName,
-          description: this.description,
-          price: this.price
-        };
-  
-        axios.put(`${BASE_URL}/products/${this.productId}`, formData, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-        .then(response => {
-          console.log('Product updated successfully:', response.data);
-          // Optionally, you can redirect or perform other actions after updating the product
-        })
-        .catch(error => {
-          console.error('Error updating product:', error);
-        });
-      }
+        const product = response.data;
+        this.productName = product.name;
+        this.description = product.description;
+        this.price = product.price;
+      })
+      .catch(error => {
+        console.error('Error fetching product details:', error);
+        Swal.fire('Error', 'Failed to fetch product details', 'error');
+      });
+    },
+    submitForm() {
+      const token = localStorage.getItem('token');
+      const formData = {
+        name: this.productName,
+        description: this.description,
+        price: this.price
+      };
+
+      axios.put(`${BASE_URL}/products/${this.productId}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(() => {
+        Swal.fire('Success', 'Product updated successfully', 'success');
+        // Optionally, you can redirect or perform other actions after updating the product
+      })
+      .catch(error => {
+        console.error('Error updating product:', error);
+        Swal.fire('Error', 'Failed to update product', 'error');
+      });
     }
-  };
+  }
+};
   </script>
   
   <style scoped>

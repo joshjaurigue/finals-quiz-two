@@ -20,6 +20,7 @@
 <script>
 import { BASE_URL } from '@/config';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default {
   name: 'DeleteProducts',
@@ -31,17 +32,33 @@ export default {
   methods: {
     submitForm() {
       const token = localStorage.getItem('token');
-      axios.delete(`${BASE_URL}/products/${this.productId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
+      
+      // Display a confirmation dialog using SweetAlert2
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You will not be able to recover this product!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.delete(`${BASE_URL}/products/${this.productId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          })
+          .then(response => {
+            console.log('Product deleted successfully:', response.data);
+            Swal.fire('Deleted!', 'Your product has been deleted.', 'success');
+            // Optionally, you can redirect or perform other actions after deleting the product
+          })
+          .catch(error => {
+            console.error('Error deleting product:', error);
+            Swal.fire('Error!', 'Failed to delete product.', 'error');
+          });
         }
-      })
-      .then(response => {
-        console.log('Product deleted successfully:', response.data);
-        // Optionally, you can redirect or perform other actions after deleting the product
-      })
-      .catch(error => {
-        console.error('Error deleting product:', error);
       });
     }
   }
