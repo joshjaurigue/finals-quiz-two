@@ -5,17 +5,57 @@
 
         </div>
     </nav>
-    <br>
-    <br>
     <div class="container">
         <h1>View Users</h1>
-        
+        <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="user in users" :key="user.id">
+            <td>{{ user.id }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 </template>
 
 <script>
+import { BASE_URL } from '@/config';
+import axios from 'axios';
+
 export default {
-  name: 'ViewUsers'
+  name: 'ViewUsers',
+  data() {
+    return {
+      users: []  // Store users data
+    };
+  },
+  created() {
+    this.fetchUsers();
+  },
+  methods: {
+    fetchUsers() {
+      const token = localStorage.getItem('token');
+      axios.get(`${BASE_URL}/users`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        this.users = response.data;
+      })
+      .catch(error => {
+        console.error('Error fetching users:', error);
+      });
+    }
+  }
 };
 </script>
 
@@ -24,74 +64,67 @@ export default {
     margin-top: 20px;
 }
 
-.post-form {
-    max-width: 500px;
-    margin: 0 auto;
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 18px;
+  text-align: left;
 }
 
-.form-group {
-    margin-bottom: 20px;
+.table th, .table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
 }
 
-label {
-    font-weight: bold;
-}
-
-.btn-primary {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-}
-
-.btn-primary:hover {
-    background-color: #0056b3;
+.table th {
+  background-color: #f2f2f2;
 }
 
 .nav-brand {
-    font-size: 1.2em;
-    color: #007bff;
-    text-decoration: none;
+  font-size: 1.2em;
+  color: #007bff;
+  text-decoration: none;
 }
 
 .nav-brand:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .nav-bar {
-    background-color: #4c4d4e;
-    /* Changed to a blue color */
-    padding: 1em 2em;
-    border-bottom: 2px solid #141414;
-    border-top: 2px solid #141414;
+  background-color: #4c4d4e;
+  padding: 1em 2em;
+  border-bottom: 2px solid #141414;
+  border-top: 2px solid #141414;
 }
 
 .nav-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .nav-brand {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #ffffff;
-    text-decoration: none;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #ffffff;
+  text-decoration: none;
 }
 
 .nav-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    gap: 1em;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 1em;
 }
 
 .nav-link {
-    text-decoration: none;
-    color: #ffffff;
+  text-decoration: none;
+  color: #ffffff;
 }
 
 .nav-link:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 </style>
