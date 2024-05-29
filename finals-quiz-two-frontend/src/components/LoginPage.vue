@@ -20,7 +20,7 @@
       <div class="row justify-content-center">
         <div class="col-md-6">
           <form @submit.prevent="loginUser">
-            <h4 class="mb-4">Login</h4>
+            <h4 class="mb-4 text-center">Login</h4>
             <div class="form-group">
               <input type="email" class="form-control" v-model="email" placeholder="Enter your Email" @input="clearErrors">
               <small class="text-danger" v-if="errors?.email">{{ errors.email[0] }}</small>

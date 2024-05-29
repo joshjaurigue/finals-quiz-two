@@ -15,21 +15,22 @@
       </div>
     </nav>
 
+    <!-- Registration Form -->
     <div class="container mt-5 mx-auto">
       <div class="row justify-content-center">
         <div class="col-md-6">
-          <form @submit.prevent="registerUser">
-            <h4 class="mb-4">Register</h4>
+          <form @submit.prevent="registerUser" class="registration-form p-4 shadow">
+            <h4 class="mb-4 text-center">Register</h4>
             <div class="form-group">
-              <input type="text" class="form-control" v-model="name" placeholder="Enter your Name" @input="clearErrors">
+              <input type="text" class="form-control" v-model="name" placeholder="Enter your Name" @input="clearErrors('name')">
               <small class="text-danger" v-if="errors?.name">{{ errors.name[0] }}</small>
             </div>
             <div class="form-group">
-              <input type="email" class="form-control" v-model="email" placeholder="Enter your Email" @input="clearErrors">
+              <input type="email" class="form-control" v-model="email" placeholder="Enter your Email" @input="clearErrors('email')">
               <small class="text-danger" v-if="errors?.email">{{ errors.email[0] }}</small>
             </div>
             <div class="form-group">
-              <input :type="passwordVisible ? 'text' : 'password'" class="form-control" v-model="password" placeholder="Enter your Password" @input="clearErrors">
+              <input :type="passwordVisible ? 'text' : 'password'" class="form-control" v-model="password" placeholder="Enter your Password" @input="clearErrors('password')">
               <small class="text-danger" v-if="errors?.password">{{ errors.password[0] }}</small>
             </div>
             <div class="form-group form-check">
@@ -38,6 +39,7 @@
             </div>
             <button type="submit" class="btn btn-primary w-100">Register</button>
           </form>
+          <p class="mt-3">Already have an account? <router-link to="/">Login here!</router-link></p>
         </div>
       </div>
     </div>
@@ -48,6 +50,7 @@
 import axios from 'axios';
 
 export default {
+  name: 'RegisterPage',
   data() {
     return {
       name: '',
@@ -65,21 +68,18 @@ export default {
     },
     async registerUser() {
       try {
-        console.log('Registering user...');
         const response = await axios.post(`${process.env.VUE_APP_BASE_URL}/register`, {
           name: this.name,
           email: this.email,
           password: this.password,
           password_confirmation: this.password
         });
-        console.log('Registration response:', response);
         if (response.status === 201) {
           this.clearForm();
           alert('Registration successful');
           this.$router.push({ name: 'login' }); // Redirect to login page after successful registration
         }
       } catch (error) {
-        console.error('Registration error:', error);
         if (error.response && error.response.data && error.response.data.errors) {
           this.errors = error.response.data.errors;
         } else {
@@ -99,62 +99,96 @@ export default {
 
 <style scoped>
 .container {
-  padding: 20px;
+  margin-top: 5em;
+  display: flex;
+  justify-content: center;
 }
 
-.table-striped {
-  width: 100%;
-  border-collapse: collapse;
+/* Navigation bar styling */
+.nav-bar {
+  background-color: #343a40;
+  padding: 1em 2em;
+  border-bottom: 2px solid #212529;
 }
 
-.table-striped th, .table-striped td {
-  border: 1px solid #ddd;
-  padding: 8px;
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.table-striped tr:nth-child(even) {
-  background-color: #f2f2f2;
+.nav-brand {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #fff;
 }
 
-.table-striped th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: #4CAF50;
-  color: white;
+.nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 1em;
+  margin-left: auto; 
+}
+
+.nav-item {
+
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #fff;
+  padding: 0.5em 1em;
+  border-radius: 5px;
+}
+
+.nav-link:hover {
+  background-color: #495057;
+}
+/* Form Styles */
+.registration-form {
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 2em;
+}
+
+.form-group {
+  margin-bottom: 1em; 
+}
+
+.form-control {
+  border: 1px solid #CED4DA; 
+  font-size: 1.2em; 
+  padding: 0.5em; 
+}
+
+.form-control:focus {
+  border-color: #6C757D; 
+  box-shadow: none;
 }
 
 .btn-primary {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  text-decoration: none;
+  background-color: #007BFF; 
+  border-color: #007BFF;
+  font-size: 1.2em;
+  padding: 0.5em 2em;
 }
 
-.btn-secondary {
-  background-color: #6c757d;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  text-decoration: none;
+.btn-primary:hover {
+  background-color: #0056b3; 
 }
 
-.btn-danger {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  text-decoration: none;
+.mt-5 {
+  margin-top: 5em;
 }
 
-.btn-sm {
-  font-size: 0.875rem;
-  padding: 5px 10px;
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.mr-2 {
-  margin-right: 0.5rem;
+.text-center {
+  text-align: center;
 }
 </style>
-
