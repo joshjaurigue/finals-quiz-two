@@ -1,20 +1,34 @@
 <template>
-    <nav class="nav-bar">
-        <div class="nav-container">
-            <router-link class="nav-brand" to="/home">Products</router-link>
-
-        </div>
-    </nav>
+  <!-- Navigation Bar -->
+  <nav class="nav-bar">
+    <div class="nav-container">
+      <router-link class="nav-brand" to="/view-users">User Management</router-link>
+      <ul class="nav-links">
+          <li class="nav-item">
+            <router-link class="nav-link" to="/view-products">Manage Products</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/logout">Logout</router-link>
+          </li>
+        </ul>
+    </div>
+  </nav>
+    <br>
+    <br>
     <div class="container">
       <h1>Edit Users</h1>
       <form @submit.prevent="submitForm" class="post-form">
         <div class="form-group">
           <label for="name">Name:</label>
-          <input type="text" class="form-control" id="name" v-model="user.name" required>
+          <input type="text" class="form-control" id="name" v-model="user.name" >
         </div>
         <div class="form-group">
           <label for="email">Email:</label>
-          <input type="email" class="form-control" id="email" v-model="user.email" required>
+          <input type="email" class="form-control" id="email" v-model="user.email">
+        </div>
+        <div class="form-group">
+          <label for="isAdmin">Admin:</label>
+          <input type="checkbox" id="isAdmin" v-model="user.is_admin">
         </div>
         <button type="submit" class="btn btn-primary">Save Changes</button>
       </form>
@@ -24,6 +38,7 @@
 <script>
 import { BASE_URL } from '@/config';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default {
   name: 'EditUsers',
@@ -32,7 +47,8 @@ export default {
       user: {
         id: '',
         name: '',
-        email: ''
+        email: '',
+        is_admin: ''
       }
     };
   },
@@ -43,33 +59,52 @@ export default {
   methods: {
     fetchUserData(userId) {
       const token = localStorage.getItem('token');
-      axios.get(`${BASE_URL}/users/${userId}`, {
+      axios.get(`${BASE_URL}/admin/users/details/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
       .then(response => {
         this.user = response.data;
+        this.user.is_admin = response.data.is_admin;
       })
       .catch(error => {
         console.error('Error fetching user data:', error);
       });
     },
     submitForm() {
+      const userId = this.$route.params.id; 
       const token = localStorage.getItem('token');
-      axios.put(`${BASE_URL}/users/${this.user.id}`, this.user, {
+      axios.put(`${BASE_URL}/admin/users/edit/${userId}`, {
+        name: this.user.name,
+        email: this.user.email,
+        is_admin: this.user.is_admin 
+      }, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
       .then(() => {
-        console.log('User updated successfully');
-        // Optionally, you can redirect or perform other actions after updating the user
+        Swal.fire({
+          icon: 'success',
+          title: 'User Updated',
+          text: 'User information has been updated successfully.',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          this.$router.push({ name: 'view-users' });
+        });
       })
       .catch(error => {
         console.error('Error updating user:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to update user information. Please try again.',
+          confirmButtonText: 'OK'
+        });
       });
     }
+
   }
 };
 </script>

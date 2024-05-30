@@ -2,28 +2,52 @@
   <div>
     <!-- Navigation Bar -->
     <nav class="nav-bar">
-      <div class="nav-container">
-        <router-link class="nav-brand" to="/view-users">Users</router-link>
-      </div>
-    </nav>
-    
+    <div class="nav-container">
+      <router-link class="nav-brand" to="/view-users">User Management</router-link>
+      <ul class="nav-links">
+          <li class="nav-item">
+            <router-link class="nav-link" to="/view-products">Manage Products</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/logout">Logout</router-link>
+          </li>
+        </ul>
+    </div>
+  </nav>
+    <br>
+    <br>
     <!-- Add User Form -->
     <div class="container">
       <form @submit.prevent="submitForm" class="form-container">
-        <div class="form-group">
-          <h2 class="form-heading">Add User</h2>
-          <label for="userName">User Name:</label>
-          <input type="text" class="form-control" id="userName" v-model="userName" required>
-        </div>
-        <div class="form-group">
-          <label for="email">Email:</label>
-          <input type="email" class="form-control" id="email" v-model="email" required>
-        </div>
-        <div class="form-group">
-          <label for="password">Password:</label>
-          <input type="password" class="form-control" id="password" v-model="password" required>
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">Add User</button>
+        <h4 class="mb-4 text-center">Register</h4>
+            <div class="form-group">
+              <input type="text" class="form-control" v-model="name" placeholder="Enter your Name" @input="clearErrors('name')">
+              <br>
+              <small class="text-danger" v-if="errors?.name">{{ errors.name[0] }}</small>
+            </div>
+            <div class="form-group">
+              <input type="email" class="form-control" v-model="email" placeholder="Enter your Email" @input="clearErrors('email')">
+              <br>
+              <small class="text-danger" v-if="errors?.email">{{ errors.email[0] }}</small>
+            </div>
+            <div class="form-group">
+              <input :type="passwordVisible ? 'text' : 'password'" class="form-control" v-model="password" placeholder="Enter your Password" @input="clearErrors('password')">
+              <br>
+              <small class="text-danger" v-if="errors?.password">{{ errors.password[0] }}</small>
+            </div>
+            <div class="form-group mb-3">
+              <input :type="confirmPasswordVisible ? 'text' : 'password'" class="form-control" v-model="password_confirmation" placeholder="Confirm Password">
+              <small class="text-danger" v-if="errors.password_confirmation">{{ errors.password_confirmation[0] }}</small>
+            </div>
+            <div class="form-group mb-3">
+              <input type="checkbox" id="showPassword" v-model="passwordVisible">
+              <label for="showPassword">Show Password</label>
+            </div>
+            <div class="form-group mb-3">
+              <input type="checkbox" id="showConfirmPassword" v-model="confirmPasswordVisible">
+              <label for="showConfirmPassword">Show Confirm Password</label>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Add User</button>
       </form>
     </div>
   </div>
@@ -38,21 +62,31 @@ export default {
   name: 'AddUser',
   data() {
     return {
-      userName: '',
+      name: '',
       email: '',
-      password: ''
+      password: '',
+      password_confirmation: '',
+      passwordVisible: false,
+      confirmPasswordVisible: false,
+      errors: {}
     };
   },
   methods: {
-    submitForm() {
+    clearErrors(field) {
+      if (this.errors[field]) {
+        this.errors[field] = null;
+      }
+    },
+    async submitForm() {
       const token = localStorage.getItem('token');
       const formData = {
-        name: this.userName,
+        name: this.name,
         email: this.email,
-        password: this.password
+        password: this.password,
+        password_confirmation: this.password_confirmation
       };
 
-      axios.post(`${BASE_URL}/users`, formData, {
+      axios.post(`${BASE_URL}/admin/users/create`, formData, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -65,20 +99,32 @@ export default {
           confirmButtonText: 'OK'
         }).then(() => {
           // Optionally, clear the form or redirect to another page
-          this.userName = '';
-          this.email = '';
-          this.password = '';
+          this.clearForm();
+          this.$router.push({ name: 'view-users' });
         });
       })
       .catch(error => {
-        console.error('Error adding user:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Failed to add user',
-          confirmButtonText: 'OK'
-        });
+        if (error.response.status === 422) {
+          // Validation error
+          this.errors = error.response.data.errors;
+        } else {
+          // Other error
+          console.error('Error adding user:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to add user',
+            confirmButtonText: 'OK'
+          });
+        }
       });
+    },
+    clearForm() {
+      this.name = '';
+      this.email = '';
+      this.password = '';
+      this.password_confirmation = '';
+      this.errors = {};
     }
   }
 };
@@ -180,5 +226,9 @@ export default {
 
 .nav-link:hover {
   text-decoration: underline;
+}
+
+.text-danger {
+  color:red;
 }
 </style>

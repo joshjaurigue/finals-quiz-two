@@ -2,7 +2,7 @@
   <div class="container">
     <nav class="nav-bar">
       <div class="nav-container">
-        <span class="nav-brand">Product Management</span>
+        <router-link class="nav-brand" to="/view-products">Product Management</router-link>
         <ul class="nav-links">
           <li class="nav-item">
             <router-link class="nav-link" to="/view-users">Manage Users</router-link>

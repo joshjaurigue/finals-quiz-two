@@ -71,19 +71,23 @@ export default {
           email: this.email,
           password: this.password
         });
-        // Use response variable here
-        console.log(response.data); // For example, log the response data
-
-        // Display success message using SweetAlert2
-        Swal.fire({
-          icon: 'success',
-          title: 'Login Successful!',
-          text: 'Welcome to E-Commerce Shop!',
-          confirmButtonText: 'OK'
-        }).then(() => {
-          // Redirect to ViewProducts.vue
-          this.$router.push('/view-products');
-        });
+        if (response.status === 201) {
+          // Successful login, handle token storage and redirection
+          const { token, user } = response.data;
+          localStorage.setItem('token', token);
+          localStorage.setItem('user', JSON.stringify(user));
+          Swal.fire({
+            icon: 'success',
+            title: 'Login Successful!',
+            text: 'You will be redirected shortly.',
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false
+          });
+          setTimeout(() => {
+            this.$router.push('/view-products');
+          }, 2000);
+        }
       } catch (error) {
         // Handle error case here
         console.error('Error logging in:', error);

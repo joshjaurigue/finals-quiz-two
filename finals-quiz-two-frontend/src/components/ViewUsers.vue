@@ -1,7 +1,15 @@
 <template>
   <nav class="nav-bar">
     <div class="nav-container">
-      <router-link class="nav-brand" to="/view-products">Products</router-link>
+      <router-link class="nav-brand" to="/view-users">User Management</router-link>
+      <ul class="nav-links">
+          <li class="nav-item">
+            <router-link class="nav-link" to="/view-products">Manage Products</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/logout">Logout</router-link>
+          </li>
+        </ul>
     </div>
   </nav>
     <br>
@@ -26,7 +34,10 @@
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
           <td>
-            <button @click="editUser(user.id)" class="btn btn-warning">Edit</button>
+        
+            <router-link :to="{ name: 'edit-users', params: { id: user.id } }"
+                class="btn btn-secondary mr-2">
+                <button class="btn btn-warning">Edit</button></router-link>
             <button @click="deleteUser(user.id)" class="btn btn-danger">Delete</button>
           </td>
         </tr>
@@ -53,13 +64,14 @@ export default {
   methods: {
     fetchUsers() {
       const token = localStorage.getItem('token');
-      axios.get(`${BASE_URL}/users`, {
+      axios.get(`${BASE_URL}/admin/users`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
       .then(response => {
-        this.users = response.data;
+        this.users = response.data.users;
+      
       })
       .catch(error => {
         console.error('Error fetching users:', error);
@@ -70,7 +82,7 @@ export default {
     },
     deleteUser(userId) {
       const token = localStorage.getItem('token');
-      axios.delete(`${BASE_URL}/users/${userId}`, {
+      axios.delete(`${BASE_URL}/admin/users/delete/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

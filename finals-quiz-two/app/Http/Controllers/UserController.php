@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -35,7 +36,8 @@ class UserController extends Controller
         // Return the user's email and name
         return response()->json([
             'name' => $user->name,
-            'email' => $user->email
+            'email' => $user->email,
+            'is_admin' => $user->is_admin
         ], 200);
     }
 
@@ -56,7 +58,10 @@ class UserController extends Controller
             'name' => $fields['name'],
             'email' => $fields['email'],
             'password' => bcrypt($fields['password']),
-            'is_admin' => $isAdmin
+            'is_admin' => $isAdmin,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
         ]);
 
         // token creation
@@ -72,11 +77,56 @@ class UserController extends Controller
     }
 
     public function editUser(Request $request, $id) {
-        //
+       // Validate ID
+        if (!is_numeric($id) || $id <= 0) {
+            return response()->json(['message' => 'Invalid user ID'], 400);
+        }
+
+        // Find the user by ID
+        $user = User::find($id);
+
+        // Check if the user exists
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        // Field validation
+        $fields = $request->validate([
+            'name' => 'string',
+            'email' => 'string|unique:users,email,'.$id,
+            'password' => 'string|confirmed',
+            'is_admin' => 'boolean'
+        ]);
+
+        // Update the user fields
+        $user->fill($fields);
+
+        // Save the updated user
+        $user->save();
+
+        // Return success message
+        return response()->json(['message' => 'User updated successfully'], 200);
     }
 
     public function deleteUser($id) {
-        //
+        // Validate ID
+        if (!is_numeric($id) || $id <= 0) {
+            return response()->json(['message' => 'Invalid user ID'], 400);
+        }
+
+        // Find the user by ID
+        $user = User::find($id);
+
+        // Check if the user exists
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        // Delete the user
+        $user->delete();
+
+        // Return success message
+        return response()->json(['message' => 'User deleted successfully'], 200);
     }
 
     public function updateRole(Request $request, $id)
