@@ -1,16 +1,19 @@
 <template>
+  <div>
+    <!-- Navigation Bar -->
     <nav class="nav-bar">
-        <div class="nav-container">
-            <router-link class="nav-brand" to="/home">Products</router-link>
-
-        </div>
+      <div class="nav-container">
+        <router-link class="nav-brand" to="/view-users">Users</router-link>
+      </div>
     </nav>
+    
+    <!-- Add User Form -->
     <div class="container">
-      <h1>Add Users</h1>
       <form @submit.prevent="submitForm" class="form-container">
         <div class="form-group">
-          <label for="name">Name:</label>
-          <input type="text" class="form-control" id="name" v-model="name" required>
+          <h2 class="form-heading">Add User</h2>
+          <label for="userName">User Name:</label>
+          <input type="text" class="form-control" id="userName" v-model="userName" required>
         </div>
         <div class="form-group">
           <label for="email">Email:</label>
@@ -23,18 +26,19 @@
         <button type="submit" class="btn btn-primary btn-block">Add User</button>
       </form>
     </div>
+  </div>
 </template>
 
 <script>
 import { BASE_URL } from '@/config';
 import axios from 'axios';
-import Swal from 'sweetalert2'; 
+import Swal from 'sweetalert2';
 
 export default {
-  name: 'AddUsers',
+  name: 'AddUser',
   data() {
     return {
-      name: '',
+      userName: '',
       email: '',
       password: ''
     };
@@ -43,7 +47,7 @@ export default {
     submitForm() {
       const token = localStorage.getItem('token');
       const formData = {
-        name: this.name,
+        name: this.userName,
         email: this.email,
         password: this.password
       };
@@ -53,27 +57,25 @@ export default {
           Authorization: `Bearer ${token}`
         }
       })
-      .then(response => {
-        console.log('User added successfully:', response.data);
-        // Display success message using SweetAlert2
+      .then(() => {
         Swal.fire({
           icon: 'success',
-          title: 'Success!',
-          text: 'User added successfully!',
+          title: 'User Added',
+          text: 'User has been added successfully',
           confirmButtonText: 'OK'
+        }).then(() => {
+          // Optionally, clear the form or redirect to another page
+          this.userName = '';
+          this.email = '';
+          this.password = '';
         });
-        // Optionally, you can reset the form or redirect the user
-        this.name = '';
-        this.email = '';
-        this.password = '';
       })
       .catch(error => {
         console.error('Error adding user:', error);
-        // Display error message using SweetAlert2
         Swal.fire({
           icon: 'error',
-          title: 'Error!',
-          text: 'Failed to add user. Please try again.',
+          title: 'Error',
+          text: 'Failed to add user',
           confirmButtonText: 'OK'
         });
       });
@@ -84,7 +86,7 @@ export default {
 
 <style scoped>
 .container {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .form-container {

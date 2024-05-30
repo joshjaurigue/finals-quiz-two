@@ -1,18 +1,19 @@
 <template>
-    <nav class="nav-bar">
-        <div class="nav-container">
-            <router-link class="nav-brand" to="/home">Products</router-link>
-        </div>
-    </nav>
-    <div class="container">
-      <h1>Delete Users</h1>
-      <ul>
-        <li v-for="user in users" :key="user.id">
-          <span>{{ user.name }}</span>
-          <button @click="deleteUser(user.id)" class="btn btn-danger">Delete</button>
-        </li>
-      </ul>
+  <nav class="nav-bar">
+    <div class="nav-container">
+      <router-link class="nav-brand" to="/view-users">Users</router-link>
     </div>
+  </nav>
+  <div class="container">
+    <form @submit.prevent="submitForm" class="form-container">
+      <div class="form-group">
+        <h2 class="form-heading">Delete User</h2>
+        <label for="userId">User ID:</label>
+        <input type="text" class="form-control" id="userId" v-model="userId" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Delete User</button>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -21,35 +22,20 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 export default {
-  name: 'DeleteUsers',
+  name: 'DeleteUser',
   data() {
     return {
-      users: [] // Store fetched users
+      userId: ''  // Field to capture the user ID to be deleted
     };
   },
-  created() {
-    this.fetchUsers();
-  },
   methods: {
-    fetchUsers() {
+    submitForm() {
       const token = localStorage.getItem('token');
-      axios.get(`${BASE_URL}/users`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-        .then(response => {
-        this.users = response.data;
-      })
-      .catch(error => {
-        console.error('Error fetching users:', error);
-        Swal.fire('Error', 'Failed to fetch users', 'error');
-      });
-    },
-    confirmDeleteUser(userId) {
+
+      // Display a confirmation dialog using SweetAlert2
       Swal.fire({
         title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        text: 'You will not be able to recover this user!',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -57,25 +43,22 @@ export default {
         confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
         if (result.isConfirmed) {
-          this.deleteUser(userId);
+          axios.delete(`${BASE_URL}/users/${this.userId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          })
+          .then(response => {
+            console.log('User deleted successfully:', response.data);
+            Swal.fire('Deleted!', 'The user has been deleted.', 'success');
+            // Optionally, you can clear the form or redirect to another page
+            this.userId = '';
+          })
+          .catch(error => {
+            console.error('Error deleting user:', error);
+            Swal.fire('Error!', 'Failed to delete user.', 'error');
+          });
         }
-      });
-    },
-    deleteUser(userId) {
-      const token = localStorage.getItem('token');
-      axios.delete(`${BASE_URL}/users/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(() => {
-        // Remove the deleted user from the list
-        this.users = this.users.filter(user => user.id !== userId);
-        Swal.fire('Deleted!', 'The user has been deleted.', 'success');
-      })
-      .catch(error => {
-        console.error('Error deleting user:', error);
-        Swal.fire('Error', 'Failed to delete user', 'error');
       });
     }
   }
@@ -84,7 +67,75 @@ export default {
 
 <style scoped>
 .container {
-    margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 120px); /* Adjust the height to ensure it fits within the viewport minus the navbar */
+  margin-top: 20px;
+}
+
+.form-container {
+  max-width: 400px;
+  padding: 30px;
+  border-radius: 8px;
+  background-color: #f7f7f7;
+  box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.1);
+}
+
+.form-heading {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.input-group {
+  width: 100%;
+}
+
+.input-group-text {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+.nav-brand {
+  font-size: 1.2em;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.nav-brand:hover {
+  text-decoration: underline;
 }
 
 .nav-bar {
@@ -105,23 +156,6 @@ export default {
   font-weight: bold;
   color: #ffffff;
   text-decoration: none;
-}
-
-.nav-brand:hover {
-  text-decoration: underline;
-}
-
-.btn-danger {
-  background-color: #dc3545;
-  color: #fff;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.btn-danger:hover {
-  background-color: #c82333;
 }
 
 .nav-links {

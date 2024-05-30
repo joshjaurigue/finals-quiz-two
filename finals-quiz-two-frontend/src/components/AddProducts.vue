@@ -1,27 +1,38 @@
 <template>
-  <div class="container">
-    <h2 class="form-heading">Add New Product</h2>
-    <form @submit.prevent="submitForm" class="form-container">
-      <div class="form-group">
-        <label for="productName">Product Name:</label>
-        <input type="text" class="form-control" id="productName" v-model="productName" required>
+  <div>
+    <!-- Navigation Bar -->
+    <nav class="nav-bar">
+      <div class="nav-container">
+        <router-link class="nav-brand" to="/view-products">Products</router-link>
       </div>
-      <div class="form-group">
-        <label for="description">Description:</label>
-        <textarea class="form-control" id="description" v-model="description" required></textarea>
-      </div>
-      <div class="form-group">
-        <label for="price">Price:</label>
-        <input type="number" class="form-control" id="price" v-model="price" required>
-      </div>
-      <button type="submit" class="btn btn-primary btn-block">Add Product</button>
-    </form>
+    </nav>
+    
+    <!-- Add Product Form -->
+    <div class="container">
+      <form @submit.prevent="submitForm" class="form-container">
+        <div class="form-group">
+          <h2 class="form-heading">Add Product</h2>
+          <label for="productName">Product Name:</label>
+          <input type="text" class="form-control" id="productName" v-model="productName" required>
+        </div>
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <textarea class="form-control" id="description" v-model="description" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="price">Price:</label>
+          <input type="number" class="form-control" id="price" v-model="price" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Add Product</button>
+      </form>
+    </div>
   </div>
 </template>
 
 <script>
 import { BASE_URL } from '@/config';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default {
   name: 'AddProduct',
@@ -46,12 +57,27 @@ export default {
           Authorization: `Bearer ${token}`
         }
       })
-      .then(response => {
-        console.log('Product added successfully:', response.data);
-        // Optionally, you can redirect or perform other actions after adding the product
+      .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Product Added',
+          text: 'Product has been added successfully',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          // Optionally, clear the form or redirect to another page
+          this.productName = '';
+          this.description = '';
+          this.price = '';
+        });
       })
       .catch(error => {
-        console.error("Error adding product:", error);
+        console.error('Error adding product:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to add product',
+          confirmButtonText: 'OK'
+        });
       });
     }
   }
@@ -63,7 +89,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: calc(100vh - 120px); /* Adjust the height to ensure it fits within the viewport minus the navbar */
+  margin-top: 20px;
 }
 
 .form-container {
@@ -118,5 +145,52 @@ export default {
 .btn-block {
   display: block;
   width: 100%;
+}
+
+.nav-brand {
+  font-size: 1.2em;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.nav-brand:hover {
+  text-decoration: underline;
+}
+
+.nav-bar {
+  background-color: #4c4d4e;
+  padding: 1em 2em;
+  border-bottom: 2px solid #141414;
+  border-top: 2px solid #141414;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-brand {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 1em;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
 }
 </style>

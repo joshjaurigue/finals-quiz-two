@@ -81,7 +81,19 @@ export default {
       } catch (error) {
         if (error.response && error.response.data && error.response.data.errors) {
           this.errors = error.response.data.errors;
+          Swal.fire({
+            icon: 'error',
+            title: 'Registration Failed',
+            text: 'Please check your input and try again.',
+            confirmButtonText: 'OK'
+          });
         } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Registration Failed',
+            text: 'Please check your credentials and try again.',
+            confirmButtonText: 'OK'
+          });
           console.error('An unexpected error occurred:', error);
         }
       }

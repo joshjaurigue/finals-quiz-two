@@ -5,7 +5,7 @@
         <span class="nav-brand">Product Management</span>
         <ul class="nav-links">
           <li class="nav-item">
-            <router-link class="nav-link" to="/manage-users">Manage Users</router-link>
+            <router-link class="nav-link" to="/view-users">Manage Users</router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/logout">Logout</router-link>
@@ -15,7 +15,7 @@
     </nav>
     <br>
     <br>
-    <router-link to="/products/create" class="btn btn-primary">Add New Product</router-link>
+    <router-link to="/add-products" class="btn btn-primary">Add New Product</router-link>
     <br>
     <br>
     <table class="table-striped">
