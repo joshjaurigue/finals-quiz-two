@@ -1,12 +1,19 @@
 <template>
   <div>
-    <!-- Navigation Bar -->
-    <nav class="nav-bar">
+     <!-- Navigation Bar -->
+     <nav class="nav-bar">
       <div class="nav-container">
         <router-link class="nav-brand" to="/">E-Commerce Shop</router-link>
+        <ul class="nav-links">
+          <li class="nav-item">
+            <router-link class="nav-link" to="/">Login</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/register">Register</router-link>
+          </li>
+        </ul>
       </div>
     </nav>
-
     <!-- Registration Form -->
     <div class="container mt-5 mx-auto">
       <div class="row justify-content-center">
@@ -15,19 +22,30 @@
             <h4 class="mb-4 text-center">Register</h4>
             <div class="form-group">
               <input type="text" class="form-control" v-model="name" placeholder="Enter your Name" @input="clearErrors('name')">
+              <br>
               <small class="text-danger" v-if="errors?.name">{{ errors.name[0] }}</small>
             </div>
             <div class="form-group">
               <input type="email" class="form-control" v-model="email" placeholder="Enter your Email" @input="clearErrors('email')">
+              <br>
               <small class="text-danger" v-if="errors?.email">{{ errors.email[0] }}</small>
             </div>
             <div class="form-group">
               <input :type="passwordVisible ? 'text' : 'password'" class="form-control" v-model="password" placeholder="Enter your Password" @input="clearErrors('password')">
+              <br>
               <small class="text-danger" v-if="errors?.password">{{ errors.password[0] }}</small>
             </div>
-            <div class="form-group form-check">
-              <input type="checkbox" id="showPassword" v-model="passwordVisible" class="form-check-input">
-              <label for="showPassword" class="form-check-label">Show Password</label>
+            <div class="form-group mb-3">
+              <input :type="confirmPasswordVisible ? 'text' : 'password'" class="form-control" v-model="password_confirmation" placeholder="Confirm Password">
+              <small class="text-danger" v-if="errors.password_confirmation">{{ errors.password_confirmation[0] }}</small>
+            </div>
+            <div class="form-group mb-3">
+              <input type="checkbox" id="showPassword" v-model="passwordVisible">
+              <label for="showPassword">Show Password</label>
+            </div>
+            <div class="form-group mb-3">
+              <input type="checkbox" id="showConfirmPassword" v-model="confirmPasswordVisible">
+              <label for="showConfirmPassword">Show Confirm Password</label>
             </div>
             <button type="submit" class="btn btn-primary w-100">Register</button>
           </form>
@@ -39,6 +57,7 @@
 </template>
 
 <script>
+import { BASE_URL } from '@/config';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
@@ -49,7 +68,9 @@ export default {
       name: '',
       email: '',
       password: '',
+      password_confirmation: '',
       passwordVisible: false,
+      confirmPasswordVisible: false,
       errors: {}
     };
   },
@@ -61,11 +82,11 @@ export default {
     },
     async registerUser() {
       try {
-        const response = await axios.post(`${process.env.VUE_APP_BASE_URL}/register`, {
+        const response = await axios.post(`${BASE_URL}/register`, {
           name: this.name,
           email: this.email,
           password: this.password,
-          password_confirmation: this.password
+          password_confirmation: this.password_confirmation
         });
         if (response.status === 201) {
           this.clearForm();
@@ -102,11 +123,13 @@ export default {
       this.name = '';
       this.email = '';
       this.password = '';
+      this.password_confirmation = '';
       this.errors = {};
     }
   }
 };
 </script>
+
 
 <style scoped>
 .container {
@@ -201,5 +224,8 @@ export default {
 
 .text-center {
   text-align: center;
+}
+.text-danger {
+  color:red;
 }
 </style>

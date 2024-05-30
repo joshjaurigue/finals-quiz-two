@@ -4,21 +4,31 @@
     <nav class="nav-bar">
       <div class="nav-container">
         <router-link class="nav-brand" to="/">E-Commerce Shop</router-link>
+        <ul class="nav-links">
+          <li class="nav-item">
+            <router-link class="nav-link" to="/">Login</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/register">Register</router-link>
+          </li>
+        </ul>
       </div>
     </nav>
 
     <!-- Login Form -->
-    <div class="container mt-5 mx-auto">
+    <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-6">
           <form @submit.prevent="loginUser">
             <h4 class="mb-4 text-center">Login</h4>
             <div class="form-group">
               <input type="email" class="form-control" v-model="email" placeholder="Enter your Email" @input="clearErrors">
+              <br>
               <small class="text-danger" v-if="errors?.email">{{ errors.email[0] }}</small>
             </div>
             <div class="form-group">
               <input :type="passwordVisible ? 'text' : 'password'" class="form-control" v-model="password" placeholder="Enter your Password" @input="clearErrors">
+              <br>
               <small class="text-danger" v-if="errors?.password">{{ errors.password[0] }}</small>
             </div>
             <div class="form-group form-check">
@@ -35,6 +45,7 @@
 </template>
 
 <script>
+import { BASE_URL } from '@/config';
 import axios from 'axios'; // Import Axios
 import Swal from 'sweetalert2'; // Import SweetAlert2
 
@@ -56,7 +67,7 @@ export default {
     },
     async loginUser() {
       try {
-        const response = await axios.post('/login', {
+        const response = await axios.post(`${BASE_URL}/login`, {
           email: this.email,
           password: this.password
         });
@@ -100,7 +111,7 @@ export default {
 .nav-container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
 }
 
 
@@ -165,6 +176,25 @@ export default {
 
 .btn-primary:hover {
   background-color: #0056b3; /* Darker blue color on hover */
+}
+
+.nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 1em;
+}
+nav-link {
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+.text-danger {
+  color:red;
 }
 </style>
 

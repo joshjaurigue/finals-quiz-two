@@ -12,47 +12,47 @@ import ViewUsers from '../components/ViewUsers.vue';
 const routes = [
   {
     path: '/add-products',
-    name: 'AddProducts',
+    name: 'add-products',
     component: AddProducts
   },
   {
     path: '/add-users',
-    name: 'AddUsers',
+    name: 'add-users',
     component: AddUsers
   },
   {
     path: '/delete-products',
-    name: 'DeleteProducts',
+    name: 'add-users',
     component: DeleteProducts
   },
   {
     path: '/delete-users',
-    name: 'DeleteUsers',
+    name: 'delete-users',
     component: DeleteUsers
   },
   {
     path: '/edit-product/:id',
-    name: 'EditProduct',
+    name: 'edit-products',
     component: EditProduct
   },
   {
     path: '/login',
-    name: 'LoginPage',
+    name: 'login',
     component: LoginPage
   },
   {
     path: '/register',
-    name: 'RegisterPage',
+    name: 'register',
     component: RegisterPage
   },
   {
     path: '/view-products',
-    name: 'ViewProducts',
+    name: 'view-products',
     component: ViewProducts
   },
   {
     path: '/view-users',
-    name: 'ViewUsers',
+    name: 'view-users',
     component: ViewUsers
   },
   {
