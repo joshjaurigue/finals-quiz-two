@@ -2,7 +2,7 @@
     <div>
       <nav class="nav-bar">
         <div class="nav-container">
-          <router-link class="nav-brand" to="/home">Products</router-link>
+          <router-link class="nav-brand" to="/view-products">Products</router-link>
         </div>
       </nav>
       <div class="container">
@@ -64,27 +64,28 @@
       });
     },
     submitForm() {
-      const token = localStorage.getItem('token');
-      const formData = {
-        product_name: this.productName,
-        product_description: this.description,
-        product_price: this.price
-      };
+  const token = localStorage.getItem('token');
+  const formData = {
+    product_name: this.productName,
+    product_description: this.description,
+    product_price: this.price
+  };
 
-      axios.put(`${BASE_URL}/products/edit/${this.productId}`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(() => {
-        Swal.fire('Success', 'Product updated successfully', 'success');
-        // Optionally, you can redirect or perform other actions after updating the product
-      })
-      .catch(error => {
-        console.error('Error updating product:', error);
-        Swal.fire('Error', 'Failed to update product', 'error');
-      });
+  axios.put(`${BASE_URL}/products/edit/${this.productId}`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`
     }
+  })
+  .then(() => {
+    Swal.fire('Success', 'Product updated successfully', 'success');
+    // Redirect to view-products route
+    this.$router.push('/view-products');
+  })
+  .catch(error => {
+    console.error('Error updating product:', error);
+    Swal.fire('Error', 'Failed to update product', 'error');
+  });
+}
   }
 };
   </script>

@@ -64,10 +64,8 @@ export default {
           text: 'Product has been added successfully',
           confirmButtonText: 'OK'
         }).then(() => {
-          // Optionally, clear the form or redirect to another page
-          this.productName = '';
-          this.description = '';
-          this.price = '';
+          // Redirect to view-products page
+          this.$router.push({ name: 'view-products' });
         });
       })
       .catch(error => {

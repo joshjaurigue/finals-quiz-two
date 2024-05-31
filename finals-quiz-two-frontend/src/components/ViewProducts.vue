@@ -33,9 +33,8 @@
           <td>{{ product.product_description }}</td>
           <td>{{ product.product_price }}</td>
           <td>
-            <!-- <router-link :to="{ name: 'view-product', params: { id:product.id } }" class="btn btn-primary mr-2 btn-sm">View</router-link> -->
             <router-link :to="{ name: 'edit-product', params: { id:product.id } }" class="btn btn-secondary mr-2 btn-sm">Edit</router-link>
-            <button @click="deleteProduct(product.id)" class="btn btn-danger btn-sm">Delete</button>
+            <button @click="confirmDeleteProduct(product.id)" class="btn btn-danger btn-sm">Delete</button>
           </td>
         </tr>
       </tbody>
@@ -46,6 +45,7 @@
 <script>
 import { BASE_URL } from '@/config';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default {
   name: 'ViewProduct',
@@ -79,21 +79,36 @@ export default {
         console.error("There was an error fetching the products:", error);
       });
     },
+    confirmDeleteProduct(productId) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.deleteProduct(productId);
+        }
+      });
+    },
     deleteProduct(productId) {
-      if (confirm('Are you sure you want to delete this product?')) {
-        const token = localStorage.getItem('token');
-        axios.delete(`${BASE_URL}/products/delete/${productId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-        .then(() => {
-          this.products = this.products.filter(product => product.id !== productId);
-        })
-        .catch(error => {
-          console.error("There was an error deleting the product:", error);
-        });
-      }
+      const token = localStorage.getItem('token');
+      axios.delete(`${BASE_URL}/products/delete/${productId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(() => {
+        this.products = this.products.filter(product => product.id !== productId);
+        Swal.fire('Deleted!', 'Your product has been deleted.', 'success');
+      })
+      .catch(error => {
+        console.error("There was an error deleting the product:", error);
+        Swal.fire('Error', 'Failed to delete the product', 'error');
+      });
     },
   },
 };
@@ -142,7 +157,7 @@ export default {
 
 .nav-links {
   list-style: none;
-  padding: 100;
+  padding: 0;
   margin: 0;
   display: flex;
 }
@@ -153,7 +168,7 @@ export default {
 .nav-link {
   text-decoration: none;
   color: #fff;
-  padding: 0.5em 3em;
+  padding: 0.5em 1em;
   border-radius: 5px;
 }
 

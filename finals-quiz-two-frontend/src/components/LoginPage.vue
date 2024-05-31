@@ -2,18 +2,18 @@
   <div>
     <!-- Navigation Bar -->
     <nav class="nav-bar">
-      <div class="nav-container">
-        <router-link class="nav-brand" to="/">E-Commerce Shop</router-link>
-        <ul class="nav-links">
-          <li class="nav-item">
-            <router-link class="nav-link" to="/">Login</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/register">Register</router-link>
-          </li>
-        </ul>
-      </div>
-    </nav>
+    <div class="nav-container">
+      <router-link class="nav-brand" to="/">E-Commerce Shop</router-link>
+      <ul class="nav-links">
+        <li class="nav-item">
+          <router-link class="nav-link" to="/">Login</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link" to="/register">Register</router-link>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
     <!-- Login Form -->
     <div class="container">
@@ -115,9 +115,8 @@ export default {
 .nav-container {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
 }
-
 
 .nav-brand {
   font-size: 1.5em;
@@ -130,12 +129,10 @@ export default {
   padding: 0;
   margin: 0;
   display: flex;
-  margin-left: auto; 
-  gap: 2em; 
+  gap: 2em;
 }
 
-.nav-item {
-}
+.nav-item {}
 
 .nav-link {
   text-decoration: none;
@@ -147,7 +144,6 @@ export default {
 .nav-link:hover {
   background-color: #495057;
 }
-
 
 /* Form Styles */
 .container {
@@ -182,23 +178,8 @@ export default {
   background-color: #0056b3; /* Darker blue color on hover */
 }
 
-.nav-links {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  gap: 1em;
-}
-nav-link {
-  text-decoration: none;
-  color: #ffffff;
-}
-
-.nav-link:hover {
-  text-decoration: underline;
-}
 .text-danger {
-  color:red;
+  color: red;
 }
 </style>
 

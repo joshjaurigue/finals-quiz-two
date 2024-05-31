@@ -16,9 +16,9 @@
     <br>
     <br>
     <div class="container">
-      <h1>Edit Users</h1>
       <form @submit.prevent="submitForm" class="post-form">
         <div class="form-group">
+          <h1>Edit Users</h1>
           <label for="name">Name:</label>
           <input type="text" class="form-control" id="name" v-model="user.name" >
         </div>
@@ -111,30 +111,65 @@ export default {
 
 <style scoped>
 .container {
-    margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 120px); /* Adjust the height to ensure it fits within the viewport minus the navbar */
+  margin-top: 20px;
 }
 
-.post-form {
-  max-width: 500px;
-  margin: 0 auto;
+.form-container {
+  max-width: 400px;
+  padding: 30px;
+  border-radius: 8px;
+  background-color: #f7f7f7;
+  box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.1);
+}
+
+.form-heading {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
 }
 
 .form-group {
   margin-bottom: 20px;
 }
 
-label {
-  font-weight: bold;
+.form-control {
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.input-group {
+  width: 100%;
+}
+
+.input-group-text {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
 }
 
 .btn-primary {
   background-color: #007bff;
   color: #fff;
   border: none;
+  padding: 12px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .btn-primary:hover {
   background-color: #0056b3;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
 }
 
 .nav-brand {
