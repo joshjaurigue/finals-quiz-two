@@ -41,7 +41,7 @@ const routes = [
   },
   {
     path: '/edit-product/:id',
-    name: 'edit-products',
+    name: 'edit-product',
     component: EditProduct,
     meta: { requiresAuth: true, requiresAdmin: false }
   },

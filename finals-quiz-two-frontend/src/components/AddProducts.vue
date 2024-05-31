@@ -47,12 +47,12 @@ export default {
     submitForm() {
       const token = localStorage.getItem('token');
       const formData = {
-        name: this.productName,
-        description: this.description,
-        price: this.price
+        product_name: this.productName,
+        product_description: this.description,
+        product_price: this.price
       };
 
-      axios.post(`${BASE_URL}/products`, formData, {
+      axios.post(`${BASE_URL}/products/create`, formData, {
         headers: {
           Authorization: `Bearer ${token}`
         }

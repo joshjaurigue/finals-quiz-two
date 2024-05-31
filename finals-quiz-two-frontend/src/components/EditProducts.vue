@@ -47,16 +47,16 @@
     methods: {
       fetchProductDetails() {
         const token = localStorage.getItem('token');
-        axios.get(`${BASE_URL}/products/${this.productId}`, {
+        axios.get(`${BASE_URL}/products/details/${this.productId}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
         })
         .then(response => {
         const product = response.data;
-        this.productName = product.name;
-        this.description = product.description;
-        this.price = product.price;
+        this.productName = product.product_name;
+        this.description = product.product_description;
+        this.price = product.product_price;
       })
       .catch(error => {
         console.error('Error fetching product details:', error);
@@ -66,12 +66,12 @@
     submitForm() {
       const token = localStorage.getItem('token');
       const formData = {
-        name: this.productName,
-        description: this.description,
-        price: this.price
+        product_name: this.productName,
+        product_description: this.description,
+        product_price: this.price
       };
 
-      axios.put(`${BASE_URL}/products/${this.productId}`, formData, {
+      axios.put(`${BASE_URL}/products/edit/${this.productId}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`
         }

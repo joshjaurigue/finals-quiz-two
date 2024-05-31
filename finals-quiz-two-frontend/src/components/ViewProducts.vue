@@ -29,12 +29,12 @@
       </thead>
       <tbody>
         <tr v-for="product in products" :key="product.id">
-          <td>{{ product.name }}</td>
-          <td>{{ product.description }}</td>
-          <td>{{ product.price }}</td>
+          <td>{{ product.product_name }}</td>
+          <td>{{ product.product_description }}</td>
+          <td>{{ product.product_price }}</td>
           <td>
-            <router-link :to="{ name: 'viewProduct', params: { id: product.id } }" class="btn btn-primary mr-2 btn-sm">View</router-link>
-            <router-link :to="{ name: 'editProduct', params: { id: product.id } }" class="btn btn-secondary mr-2 btn-sm">Edit</router-link>
+            <!-- <router-link :to="{ name: 'view-product', params: { id:product.id } }" class="btn btn-primary mr-2 btn-sm">View</router-link> -->
+            <router-link :to="{ name: 'edit-product', params: { id:product.id } }" class="btn btn-secondary mr-2 btn-sm">Edit</router-link>
             <button @click="deleteProduct(product.id)" class="btn btn-danger btn-sm">Delete</button>
           </td>
         </tr>
@@ -82,7 +82,7 @@ export default {
     deleteProduct(productId) {
       if (confirm('Are you sure you want to delete this product?')) {
         const token = localStorage.getItem('token');
-        axios.delete(`${BASE_URL}/products/${productId}`, {
+        axios.delete(`${BASE_URL}/products/delete/${productId}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
