@@ -1,18 +1,20 @@
 <template>
   <div class="container">
     <nav class="nav-bar">
-      <div class="nav-container">
-        <router-link class="nav-brand" to="/view-products">Product Management</router-link>
-        <ul class="nav-links">
-          <li class="nav-item">
-            <router-link class="nav-link" to="/view-users">Manage Users</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/logout">Logout</router-link>
-          </li>
-        </ul>
-      </div>
-    </nav>
+  <div class="nav-container">
+    <router-link class="nav-brand" to="/view-products">Product Management</router-link>
+  </div>
+  <div class="nav-container">
+    <ul class="nav-links">
+      <li class="nav-item">
+        <router-link class="nav-link" to="/view-users">Manage User</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" to="/logout">Logout</router-link>
+      </li>
+    </ul>
+  </div>
+</nav>
     <br>
     <br>
     <router-link to="/add-products" class="btn btn-primary">Add New Product</router-link>
@@ -81,8 +83,8 @@ export default {
     },
     confirmDeleteProduct(productId) {
       Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        title: 'Are you sure ?',
+        text: "You will not be able to recover this product!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
@@ -139,14 +141,16 @@ export default {
 
 .nav-bar {
   background-color: #343a40;
-  padding: 1em 2em;
+  padding-top: 1em;
+  padding-bottom: 1em;
   border-bottom: 2px solid #212529;
+  display: flex;
+  justify-content: space-between; /* Align items to the start and end of the nav-bar */
 }
 
 .nav-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: center; /* Align items vertically */
 }
 
 .nav-brand {
@@ -160,10 +164,10 @@ export default {
   padding: 0;
   margin: 0;
   display: flex;
+  gap: 2em;
 }
 
-.nav-item {
-}
+.nav-item {}
 
 .nav-link {
   text-decoration: none;

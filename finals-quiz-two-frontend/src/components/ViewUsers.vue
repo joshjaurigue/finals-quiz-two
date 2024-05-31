@@ -1,17 +1,19 @@
 <template>
-  <nav class="nav-bar">
-    <div class="nav-container">
-      <router-link class="nav-brand" to="/view-users">User Management</router-link>
-      <ul class="nav-links">
-          <li class="nav-item">
-            <router-link class="nav-link" to="/view-products">Manage Products</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/logout">Logout</router-link>
-          </li>
-        </ul>
-    </div>
-  </nav>
+    <nav class="nav-bar">
+  <div class="nav-container">
+    <router-link class="nav-brand" to="/view-users">User Management</router-link>
+  </div>
+  <div class="nav-container">
+    <ul class="nav-links">
+      <li class="nav-item">
+        <router-link class="nav-link" to="/view-products">Manage Product</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" to="/logout">Logout</router-link>
+      </li>
+    </ul>
+  </div>
+</nav>
     <br>
     <br>
     <router-link to="/add-users" class="btn btn-primary">Add New User</router-link>
@@ -133,34 +135,24 @@ export default {
   background-color: #f2f2f2;
 }
 
-.nav-brand {
-  font-size: 1.2em;
-  color: #007bff;
-  text-decoration: none;
-}
-
-.nav-brand:hover {
-  text-decoration: underline;
-}
-
 .nav-bar {
-  background-color: #4c4d4e;
-  padding: 1em 2em;
-  border-bottom: 2px solid #141414;
-  border-top: 2px solid #141414;
+  background-color: #343a40;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  border-bottom: 2px solid #212529;
+  display: flex;
+  justify-content: space-between; /* Align items to the start and end of the nav-bar */
 }
 
 .nav-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: center; /* Align items vertically */
 }
 
 .nav-brand {
   font-size: 1.5em;
   font-weight: bold;
-  color: #ffffff;
-  text-decoration: none;
+  color: #fff;
 }
 
 .nav-links {
@@ -168,16 +160,20 @@ export default {
   padding: 0;
   margin: 0;
   display: flex;
-  gap: 1em;
+  gap: 2em;
 }
+
+.nav-item {}
 
 .nav-link {
   text-decoration: none;
-  color: #ffffff;
+  color: #fff;
+  padding: 0.5em 1em;
+  border-radius: 5px;
 }
 
 .nav-link:hover {
-  text-decoration: underline;
+  background-color: #495057;
 }
 
 .btn {

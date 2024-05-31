@@ -4,14 +4,6 @@
     <nav class="nav-bar">
     <div class="nav-container">
       <router-link class="nav-brand" to="/view-users">User Management</router-link>
-      <ul class="nav-links">
-          <li class="nav-item">
-            <router-link class="nav-link" to="/view-products">Manage Products</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/logout">Logout</router-link>
-          </li>
-        </ul>
     </div>
   </nav>
     <br>

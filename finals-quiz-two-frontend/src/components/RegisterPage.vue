@@ -2,18 +2,20 @@
   <div>
      <!-- Navigation Bar -->
      <nav class="nav-bar">
-      <div class="nav-container">
-        <router-link class="nav-brand" to="/">E-Commerce Shop</router-link>
-        <ul class="nav-links">
-          <li class="nav-item">
-            <router-link class="nav-link" to="/">Login</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/register">Register</router-link>
-          </li>
-        </ul>
-      </div>
-    </nav>
+  <div class="nav-container">
+    <router-link class="nav-brand" to="/">E-Commerce Shop</router-link>
+  </div>
+  <div class="nav-container">
+    <ul class="nav-links">
+      <li class="nav-item">
+        <router-link class="nav-link" to="/">Login</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" to="/register">Register</router-link>
+      </li>
+    </ul>
+  </div>
+</nav>
     <!-- Registration Form -->
     <div class="container mt-5 mx-auto">
       <div class="row justify-content-center">
@@ -141,14 +143,16 @@ export default {
 /* Navigation bar styling */
 .nav-bar {
   background-color: #343a40;
-  padding: 1em 2em;
+  padding-top: 1em;
+  padding-bottom: 1em;
   border-bottom: 2px solid #212529;
+  display: flex;
+  justify-content: space-between; /* Align items to the start and end of the nav-bar */
 }
 
 .nav-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: center; /* Align items vertically */
 }
 
 .nav-brand {
@@ -162,13 +166,10 @@ export default {
   padding: 0;
   margin: 0;
   display: flex;
-  gap: 1em;
-  margin-left: auto; 
+  gap: 2em;
 }
 
-.nav-item {
-
-}
+.nav-item {}
 
 .nav-link {
   text-decoration: none;

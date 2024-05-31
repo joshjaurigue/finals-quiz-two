@@ -5,6 +5,7 @@
       <div class="nav-container">
         <router-link class="nav-brand" to="/view-products">Products</router-link>
       </div>
+      
     </nav>
     
     <!-- Add Product Form -->
