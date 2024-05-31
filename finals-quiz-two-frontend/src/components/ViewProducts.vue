@@ -1,20 +1,23 @@
 <template>
   <div class="container">
     <nav class="nav-bar">
-  <div class="nav-container">
-    <router-link class="nav-brand" to="/view-products">Product Management</router-link>
-  </div>
-  <div class="nav-container">
-    <ul class="nav-links">
-      <li class="nav-item">
-        <router-link class="nav-link" to="/view-users">Manage User</router-link>
-      </li>
-      <li class="nav-item">
-        <router-link class="nav-link" to="/logout">Logout</router-link>
-      </li>
-    </ul>
-  </div>
-</nav>
+      <div class="nav-container">
+        <router-link class="nav-brand" to="/view-products">Product Management</router-link>
+      </div>
+      <div class="nav-container">
+        <ul class="nav-links">
+          <li class="nav-item">
+            <router-link class="nav-link" to="/view-products">Manage Products</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/view-users">Manage User</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/logout">Logout</router-link>
+          </li>
+        </ul>
+      </div>
+    </nav>
     <br>
     <br>
     <router-link to="/add-products" class="btn btn-primary">Add New Product</router-link>

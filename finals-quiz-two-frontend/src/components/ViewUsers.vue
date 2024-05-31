@@ -9,6 +9,9 @@
         <router-link class="nav-link" to="/view-products">Manage Product</router-link>
       </li>
       <li class="nav-item">
+            <router-link class="nav-link" to="/view-users">Manage User</router-link>
+      </li>
+      <li class="nav-item">
         <router-link class="nav-link" to="/logout">Logout</router-link>
       </li>
     </ul>
@@ -84,30 +87,34 @@ export default {
     },
     deleteUser(userId) {
       const token = localStorage.getItem('token');
-      axios.delete(`${BASE_URL}/admin/users/delete/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
+      // Display a confirmation dialog using SweetAlert2
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You will not be able to recover the user!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.delete(`${BASE_URL}/admin/users/delete/${userId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          })
+          .then(response => {
+            console.log('User deleted successfully:', response.data);
+            Swal.fire('Deleted!', 'Selected user has been deleted.', 'success');
+            this.fetchUsers();
+          })
+          .catch(error => {
+            console.error('Error deleting user:', error);
+            Swal.fire('Error!', 'Failed to delete user.', 'error');
+          });
         }
-      })
-      .then(() => {
-        Swal.fire({
-          icon: 'success',
-          title: 'User Deleted',
-          text: 'User has been deleted successfully',
-          confirmButtonText: 'OK'
-        }).then(() => {
-          this.fetchUsers(); // Refresh the list after deletion
-        });
-      })
-      .catch(error => {
-        console.error('Error deleting user:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Failed to delete user',
-          confirmButtonText: 'OK'
-        });
       });
+     
     }
   }
 };

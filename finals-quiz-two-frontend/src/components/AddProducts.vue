@@ -1,33 +1,43 @@
 <template>
-  <div>
-    <!-- Navigation Bar -->
     <nav class="nav-bar">
       <div class="nav-container">
-        <router-link class="nav-brand" to="/view-products">Products</router-link>
+        <router-link class="nav-brand" to="/view-products">Product Management</router-link>
       </div>
-      
+      <div class="nav-container">
+        <ul class="nav-links">
+          <li class="nav-item">
+            <router-link class="nav-link" to="/view-products">Manage Products</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/view-users">Manage User</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/logout">Logout</router-link>
+          </li>
+        </ul>
+      </div>
     </nav>
-    
+    <br>
+    <br>
     <!-- Add Product Form -->
     <div class="container">
       <form @submit.prevent="submitForm" class="form-container">
         <div class="form-group">
           <h2 class="form-heading">Add Product</h2>
           <label for="productName">Product Name:</label>
-          <input type="text" class="form-control" id="productName" v-model="productName" required>
+          <input type="text" class="form-control" id="productName" v-model="productName" required placeholder="Enter product name">
         </div>
         <div class="form-group">
           <label for="description">Description:</label>
-          <textarea class="form-control" id="description" v-model="description" required></textarea>
+          <textarea class="form-control" id="description" v-model="description" required placeholder="Enter product description"></textarea>
         </div>
         <div class="form-group">
           <label for="price">Price:</label>
-          <input type="number" class="form-control" id="price" v-model="price" required>
+          <input type="number" class="form-control" id="price" v-model="price" required placeholder="Enter product price">
         </div>
         <button type="submit" class="btn btn-primary btn-block">Add Product</button>
       </form>
     </div>
-  </div>
 </template>
 
 <script>
@@ -146,34 +156,24 @@ export default {
   width: 100%;
 }
 
-.nav-brand {
-  font-size: 1.2em;
-  color: #007bff;
-  text-decoration: none;
-}
-
-.nav-brand:hover {
-  text-decoration: underline;
-}
-
 .nav-bar {
-  background-color: #4c4d4e;
-  padding: 1em 2em;
-  border-bottom: 2px solid #141414;
-  border-top: 2px solid #141414;
+  background-color: #343a40;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  border-bottom: 2px solid #212529;
+  display: flex;
+  justify-content: space-between; /* Align items to the start and end of the nav-bar */
 }
 
 .nav-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: center; /* Align items vertically */
 }
 
 .nav-brand {
   font-size: 1.5em;
   font-weight: bold;
-  color: #ffffff;
-  text-decoration: none;
+  color: #fff;
 }
 
 .nav-links {
@@ -181,15 +181,20 @@ export default {
   padding: 0;
   margin: 0;
   display: flex;
-  gap: 1em;
+  gap: 2em;
 }
+
+.nav-item {}
 
 .nav-link {
   text-decoration: none;
-  color: #ffffff;
+  color: #fff;
+  padding: 0.5em 1em;
+  border-radius: 5px;
 }
 
 .nav-link:hover {
-  text-decoration: underline;
+  background-color: #495057;
 }
+
 </style>

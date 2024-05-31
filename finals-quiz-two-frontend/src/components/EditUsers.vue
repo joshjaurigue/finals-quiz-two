@@ -8,6 +8,9 @@
             <router-link class="nav-link" to="/view-products">Manage Products</router-link>
           </li>
           <li class="nav-item">
+            <router-link class="nav-link" to="/view-users">Manage User</router-link>
+          </li>
+          <li class="nav-item">
             <router-link class="nav-link" to="/logout">Logout</router-link>
           </li>
         </ul>
