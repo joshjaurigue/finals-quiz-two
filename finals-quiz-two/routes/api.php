@@ -15,10 +15,11 @@ use App\Http\Controllers\UserController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-// Protected routes 
+// Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
@@ -29,7 +30,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/admin/users', [UserController::class, 'userIndex']);
         Route::get('/admin/users/details/{id}', [UserController::class, 'showUser']);
     });
+
+    Route::get('products', [ProductController::class, 'productIndex']);
+    Route::post('products/create', [ProductController::class, 'storeProduct']);
+    Route::get('products/details/{id}', [ProductController::class, 'showProduct']);
+    Route::put('products/edit/{id}', [ProductController::class, 'editProduct']);
+    Route::delete('products/delete/{id}', [ProductController::class, 'deleteProduct']);
 });
-
-
-
